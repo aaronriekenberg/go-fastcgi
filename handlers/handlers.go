@@ -12,7 +12,6 @@ import (
 )
 
 const (
-	socketName            = "/var/www/run/go-fastcgi/socket"
 	cacheControlHeaderKey = "cache-control"
 	maxAgeZero            = "max-age=0"
 )
