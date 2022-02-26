@@ -1,3 +1,3 @@
-module github.com/aaronriekenberg/go-fastcgi-server
+module github.com/aaronriekenberg/go-fastcgi
 
 go 1.17
