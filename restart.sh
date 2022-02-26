@@ -8,4 +8,4 @@ sleep 2
 
 export PATH=${HOME}/bin:$PATH
 
-nohup ./go-fastcgi 2>&1 > output &
+nohup ./go-fastcgi > output 2>&1 &
