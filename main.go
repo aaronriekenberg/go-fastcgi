@@ -120,8 +120,10 @@ func main() {
 
 	log.Printf("begin main socketName = %q", socketName)
 
-	syscall.Umask(0002)
 	os.Remove(socketName)
+
+	// needed so group www has rwx permission on the socket.
+	syscall.Umask(0002)
 
 	ln, err := net.Listen("unix", socketName)
 	if err != nil {
@@ -131,7 +133,6 @@ func main() {
 	serveMux := http.NewServeMux()
 
 	serveMux.Handle("/cgi-bin/request_info", requestInfoHandlerFunc())
-	//serveMux.Handle("/", http.HandlerFunc(requestInfoFunction))
 
 	log.Printf("before fcgi.Serve")
 	err = fcgi.Serve(ln, serveMux)
