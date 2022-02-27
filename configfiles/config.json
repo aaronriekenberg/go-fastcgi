@@ -1,0 +1,18 @@
+{
+    "commandConfiguration": {
+        "maxConcurrentCommands": 1,
+        "requestTimeoutMilliseconds": 2000,
+        "semaphoreAcquireTimeoutMilliseconds": 200,
+        "commands": [
+            {
+                "id": "netstat_an",
+                "description": "netstat -an",
+                "command": "netstat",
+                "args": [
+                    "-a",
+                    "-n"
+                ]
+            }
+        ]
+    }
+}

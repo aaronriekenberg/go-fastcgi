@@ -2,20 +2,28 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"os"
 
+	"github.com/aaronriekenberg/go-fastcgi/config"
 	"github.com/aaronriekenberg/go-fastcgi/handlers"
 	"github.com/aaronriekenberg/go-fastcgi/server"
+
+	"github.com/kr/pretty"
 )
 
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
 
-	log.Printf("begin main")
+	if len(os.Args) != 2 {
+		log.Fatalf("Usage: %v <config json file>", os.Args[0])
+	}
 
-	serveMux := http.NewServeMux()
+	configFile := os.Args[1]
 
-	serveMux.Handle("/cgi-bin/request_info", handlers.RequestInfoHandlerFunc())
+	configuration := config.ReadConfiguration(configFile)
+	log.Printf("configuration:\n%# v", pretty.Formatter(configuration))
 
-	log.Fatalf("server.RunServer err = %v", server.RunServer(serveMux))
+	handler := handlers.CreateHandlers(configuration)
+
+	log.Fatalf("server.RunServer err = %v", server.RunServer(handler))
 }
