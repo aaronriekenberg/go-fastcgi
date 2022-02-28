@@ -1,6 +1,6 @@
 {
     "commandConfiguration": {
-        "maxConcurrentCommands": 1,
+        "maxConcurrentCommands": 10,
         "requestTimeoutMilliseconds": 2000,
         "semaphoreAcquireTimeoutMilliseconds": 200,
         "commands": [
