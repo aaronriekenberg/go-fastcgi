@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -24,7 +25,7 @@ func RunServer(
 
 	umask, err := strconv.ParseInt(serverConfiguration.UmaskOctal, 8, 0)
 	if err != nil {
-		log.Fatalf("strconv.ParseInt err = %v", err)
+		return fmt.Errorf("strconv.ParseInt err = %w", err)
 	}
 	umaskInt := int(umask)
 	log.Printf("umaskInt = %03O", umaskInt)
@@ -37,7 +38,7 @@ func RunServer(
 
 	listener, err := net.Listen("unix", serverConfiguration.UnixSocketPath)
 	if err != nil {
-		log.Fatalf("net.Listen error %v", err)
+		return fmt.Errorf("net.Listen err = %w", err)
 	}
 
 	syscall.Umask(previousUmask)
