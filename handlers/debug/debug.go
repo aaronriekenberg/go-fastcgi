@@ -88,6 +88,7 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 			return
 		}
 
+		w.Header().Add(utils.ContentTypeHeaderKey, utils.ContentTypeApplicationJSON)
 		w.Header().Add(utils.CacheControlHeaderKey, utils.MaxAgeZero)
 
 		io.Copy(w, bytes.NewReader(jsonText))
