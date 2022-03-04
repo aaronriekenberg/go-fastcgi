@@ -29,13 +29,12 @@ func createListener(
 	// needed so group www has rwx permission on the socket.
 	previousUmask := syscall.Umask(umaskInt)
 	log.Printf("previousUmask = %03O", previousUmask)
+	defer syscall.Umask(previousUmask)
 
 	listener, err := net.Listen("unix", serverConfiguration.UnixSocketPath)
 	if err != nil {
 		return nil, fmt.Errorf("net.Listen err = %w", err)
 	}
-
-	syscall.Umask(previousUmask)
 
 	return listener, nil
 }
