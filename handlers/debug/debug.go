@@ -1,22 +1,17 @@
 package debug
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"sort"
 	"strings"
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
-	"github.com/aaronriekenberg/go-fastcgi/templates"
 	"github.com/aaronriekenberg/go-fastcgi/utils"
 )
-
-type debugHTMLData struct {
-	Title   string
-	PreText string
-}
 
 func httpHeaderToString(header http.Header) string {
 	var builder strings.Builder
@@ -34,6 +29,10 @@ func httpHeaderToString(header http.Header) string {
 		fmt.Fprintf(&builder, "%v", header[key])
 	}
 	return builder.String()
+}
+
+type requestInfoData struct {
+	RequestInfo string `json:"requestInfo"`
 }
 
 func requestInfoHandlerFunc() http.HandlerFunc {
@@ -79,23 +78,19 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 		buffer.WriteString("Request Headers:\n")
 		buffer.WriteString(httpHeaderToString(r.Header))
 
-		var htmlBuilder strings.Builder
-		debugHTMLData := &debugHTMLData{
-			Title:   "Request Info",
-			PreText: buffer.String(),
+		response := &requestInfoData{
+			RequestInfo: buffer.String(),
 		}
 
-		if err := templates.Templates.ExecuteTemplate(&htmlBuilder, templates.DebugTemplateFile, debugHTMLData); err != nil {
-			log.Printf("error executing request info page template %v", err)
+		jsonText, err := json.Marshal(response)
+		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		htmlString := htmlBuilder.String()
-
 		w.Header().Add(utils.CacheControlHeaderKey, utils.MaxAgeZero)
 
-		io.Copy(w, strings.NewReader(htmlString))
+		io.Copy(w, bytes.NewReader(jsonText))
 	}
 }
 

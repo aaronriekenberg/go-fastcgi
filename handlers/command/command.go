@@ -121,7 +121,6 @@ func (commandHandler *commandHandler) commandAPIHandlerFunc(commandInfo config.C
 
 		commandAPIResponse := commandHandler.runCommand(ctx, &commandInfo)
 
-		var jsonText []byte
 		jsonText, err := json.Marshal(commandAPIResponse)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
