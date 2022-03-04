@@ -85,5 +85,9 @@
                 "command": "w"
             }
         ]
+    },
+    "serverConfiguration": {
+        "unixSocketPath": "/var/www/run/go-fastcgi/socket",
+        "umaskOctal": "007"
     }
 }

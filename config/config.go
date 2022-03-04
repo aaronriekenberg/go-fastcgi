@@ -6,6 +6,11 @@ import (
 	"os"
 )
 
+type ServerConfiguration struct {
+	UnixSocketPath string `json:"unixSocketPath"`
+	UmaskOctal     string `json:"umaskOctal"`
+}
+
 type CommandInfo struct {
 	ID          string   `json:"id"`
 	Description string   `json:"description"`
@@ -22,6 +27,7 @@ type CommandConfiguration struct {
 
 type Configuration struct {
 	CommandConfiguration CommandConfiguration `json:"commandConfiguration"`
+	ServerConfiguration  ServerConfiguration  `json:"serverConfiguration"`
 }
 
 func ReadConfiguration(configFile string) *Configuration {

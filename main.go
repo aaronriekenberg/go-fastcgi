@@ -25,5 +25,10 @@ func main() {
 
 	handler := handlers.CreateHandlers(configuration)
 
-	log.Fatalf("server.RunServer err = %v", server.RunServer(handler))
+	log.Fatalf("server.RunServer err = %v",
+		server.RunServer(
+			&configuration.ServerConfiguration,
+			handler,
+		),
+	)
 }
