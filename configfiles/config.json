@@ -7,7 +7,7 @@
             {
                 "id": "df",
                 "description": "df",
-                "command": "df",
+                "command": "/bin/df",
                 "args": [
                     "-h"
                 ]
@@ -15,7 +15,7 @@
             {
                 "id": "ifconfig",
                 "description": "ifconfig",
-                "command": "ifconfig",
+                "command": "/sbin/ifconfig",
                 "args": [
                     "-a"
                 ]
@@ -23,7 +23,7 @@
             {
                 "id": "netstat_an",
                 "description": "netstat -an",
-                "command": "netstat",
+                "command": "/usr/bin/netstat",
                 "args": [
                     "-a",
                     "-n"
@@ -32,7 +32,7 @@
             {
                 "id": "netstat_binh",
                 "description": "netstat -binh",
-                "command": "netstat",
+                "command": "/usr/bin/netstat",
                 "args": [
                     "-binh"
                 ]
@@ -40,7 +40,7 @@
             {
                 "id": "ntpctl_sa",
                 "description": "ntpctl -sa",
-                "command": "ntpctl",
+                "command": "/usr/sbin/ntpctl",
                 "args": [
                     "-sa"
                 ]
@@ -48,7 +48,7 @@
             {
                 "id": "sysctl_hw",
                 "description": "sysctl hw",
-                "command": "sysctl",
+                "command": "/sbin/sysctl",
                 "args": [
                     "hw"
                 ]
@@ -56,7 +56,7 @@
             {
                 "id": "top",
                 "description": "top",
-                "command": "top",
+                "command": "/usr/bin/top",
                 "args": [
                     "-b1"
                 ]
@@ -64,17 +64,17 @@
             {
                 "id": "uptime",
                 "description": "uptime",
-                "command": "uptime"
+                "command": "/usr/bin/uptime"
             },
             {
                 "id": "vmstat",
                 "description": "vmstat",
-                "command": "vmstat"
+                "command": "/usr/bin/vmstat"
             },
             {
                 "id": "vmstat_i",
                 "description": "vmstat -i",
-                "command": "vmstat",
+                "command": "/usr/bin/vmstat",
                 "args": [
                     "-i"
                 ]
@@ -82,7 +82,7 @@
             {
                 "id": "w",
                 "description": "w",
-                "command": "w"
+                "command": "/usr/bin/w"
             }
         ]
     },
