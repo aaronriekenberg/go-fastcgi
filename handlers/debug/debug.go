@@ -15,7 +15,6 @@ type requestInfoData struct {
 	HTTPProtocol      string      `json:"httpProtocol"`
 	Host              string      `json:"host"`
 	RemoteAddress     string      `json:"remoteAddress"`
-	RequestURI        string      `json:"requestURI"`
 	URL               string      `json:"url"`
 	BodyContentLength int64       `json:"bodyContentLength"`
 	Close             bool        `json:"close"`
@@ -37,7 +36,6 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 			HTTPProtocol:      r.Proto,
 			Host:              r.Host,
 			RemoteAddress:     r.RemoteAddr,
-			RequestURI:        r.RequestURI,
 			URL:               urlString,
 			BodyContentLength: r.ContentLength,
 			Close:             r.Close,
