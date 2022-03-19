@@ -11,14 +11,28 @@ import (
 )
 
 type requestInfoData struct {
-	HTTPMethod        string      `json:"httpMethod"`
-	HTTPProtocol      string      `json:"httpProtocol"`
-	Host              string      `json:"host"`
-	RemoteAddress     string      `json:"remoteAddress"`
-	URL               string      `json:"url"`
-	BodyContentLength int64       `json:"bodyContentLength"`
-	Close             bool        `json:"close"`
-	RequestHeaders    http.Header `json:"requestHeaders"`
+	HTTPMethod        string            `json:"httpMethod"`
+	HTTPProtocol      string            `json:"httpProtocol"`
+	Host              string            `json:"host"`
+	RemoteAddress     string            `json:"remoteAddress"`
+	URL               string            `json:"url"`
+	BodyContentLength int64             `json:"bodyContentLength"`
+	Close             bool              `json:"close"`
+	RequestHeaders    map[string]string `json:"requestHeaders"`
+}
+
+func httpHeaderToSingleValueMap(headers http.Header) map[string]string {
+	retVal := make(map[string]string)
+
+	for key, value := range headers {
+		if len(value) > 0 {
+			retVal[key] = value[0]
+		} else {
+			retVal[key] = ""
+		}
+	}
+
+	return retVal
 }
 
 func requestInfoHandlerFunc() http.HandlerFunc {
@@ -39,7 +53,7 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 			URL:               urlString,
 			BodyContentLength: r.ContentLength,
 			Close:             r.Close,
-			RequestHeaders:    r.Header,
+			RequestHeaders:    httpHeaderToSingleValueMap(r.Header),
 		}
 
 		jsonText, err := json.Marshal(response)
