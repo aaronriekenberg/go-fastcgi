@@ -4,7 +4,7 @@ import "time"
 
 const (
 	CacheControlHeaderKey      = "cache-control"
-	NoCache                    = "no-cache"
+	CacheControlNoCache        = "no-cache"
 	ContentTypeHeaderKey       = "content-type"
 	ContentTypeApplicationJSON = "application/json"
 )
