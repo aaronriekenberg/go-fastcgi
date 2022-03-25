@@ -74,7 +74,7 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 		}
 
 		w.Header().Add(utils.ContentTypeHeaderKey, utils.ContentTypeApplicationJSON)
-		w.Header().Add(utils.CacheControlHeaderKey, utils.MaxAgeZero)
+		w.Header().Add(utils.CacheControlHeaderKey, utils.NoCache)
 
 		io.Copy(w, bytes.NewReader(jsonText))
 	}
