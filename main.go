@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
 	"github.com/aaronriekenberg/go-fastcgi/handlers"
@@ -11,6 +13,12 @@ import (
 	"github.com/kr/pretty"
 )
 
+func awaitShutdownSignal() {
+	sig := make(chan os.Signal, 2)
+	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	s := <-sig
+	log.Fatalf("Signal (%v) received, stopping", s)
+}
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
 
@@ -25,10 +33,10 @@ func main() {
 
 	handler := handlers.CreateHandlers(configuration)
 
-	log.Fatalf("server.RunServer err = %v",
-		server.RunServer(
-			&configuration.ServerConfiguration,
-			handler,
-		),
+	server.StartServer(
+		&configuration.ServerConfiguration,
+		handler,
 	)
+
+	awaitShutdownSignal()
 }
