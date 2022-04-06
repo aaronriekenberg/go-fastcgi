@@ -19,6 +19,7 @@ func awaitShutdownSignal() {
 	s := <-sig
 	log.Fatalf("Signal (%v) received, stopping", s)
 }
+
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
 
