@@ -39,12 +39,11 @@ func createListener(
 	return listener, nil
 }
 
-func StartServer(
+func runServer(
 	serverConfiguration *config.ServerConfiguration,
 	serveHandler http.Handler,
 ) {
-
-	log.Printf("begin StartServer UnixSocketPath = %q UmaskOctal = %q",
+	log.Printf("begin runServer UnixSocketPath = %q UmaskOctal = %q",
 		serverConfiguration.UnixSocketPath,
 		serverConfiguration.UmaskOctal,
 	)
@@ -54,12 +53,14 @@ func StartServer(
 		log.Fatalf("createListener err = %v", err)
 	}
 
-	go func() {
-		log.Printf("before fcgi.Serve")
-		error := fcgi.Serve(listener, serveHandler)
-		log.Fatalf("after fcgi.Serve error = %v", error)
-	}()
+	log.Printf("before fcgi.Serve")
+	error := fcgi.Serve(listener, serveHandler)
+	log.Fatalf("after fcgi.Serve error = %v", error)
+}
 
-	log.Printf("end StartServer")
-
+func StartServer(
+	serverConfiguration *config.ServerConfiguration,
+	serveHandler http.Handler,
+) {
+	go runServer(serverConfiguration, serveHandler)
 }
