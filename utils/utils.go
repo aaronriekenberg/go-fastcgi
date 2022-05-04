@@ -3,8 +3,6 @@ package utils
 import "time"
 
 const (
-	CacheControlHeaderKey      = "cache-control"
-	CacheControlNoCache        = "no-cache"
 	ContentTypeHeaderKey       = "content-type"
 	ContentTypeApplicationJSON = "application/json"
 )

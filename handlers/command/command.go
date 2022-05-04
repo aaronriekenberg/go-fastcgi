@@ -52,7 +52,6 @@ func (commandHandler *commandHandler) getAllCommandsHandlerFunc(commandConfigura
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add(utils.ContentTypeHeaderKey, utils.ContentTypeApplicationJSON)
-		w.Header().Add(utils.CacheControlHeaderKey, utils.CacheControlNoCache)
 		io.Copy(w, bytes.NewReader(jsonBuffer))
 	}
 }
@@ -128,7 +127,6 @@ func (commandHandler *commandHandler) commandAPIHandlerFunc(commandInfo config.C
 		}
 
 		w.Header().Add(utils.ContentTypeHeaderKey, utils.ContentTypeApplicationJSON)
-		w.Header().Add(utils.CacheControlHeaderKey, utils.CacheControlNoCache)
 		io.Copy(w, bytes.NewReader(jsonText))
 	}
 }

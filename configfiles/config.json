@@ -87,7 +87,7 @@
         ]
     },
     "serverConfiguration": {
-        "unixSocketPath": "/var/www/run/go-fastcgi/socket",
+        "unixSocketPath": "/tmp/go-fastcgi.sock",
         "umaskOctal": "007"
     }
 }
