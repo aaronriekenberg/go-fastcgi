@@ -1,0 +1,12 @@
+# ~/.config/systemd/user/go-fastcgi.service
+
+[Unit]
+AssertPathExists=%h/go-fastcgi/go-fastcgi
+
+[Service]
+WorkingDirectory=%h/go-fastcgi
+ExecStart=%h/go-fastcgi/go-fastcgi ./configfiles/%H-config.json
+Restart=always
+
+[Install]
+WantedBy=default.target
