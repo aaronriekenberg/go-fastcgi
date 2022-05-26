@@ -7,18 +7,23 @@
             {
                 "id": "df",
                 "description": "df",
-                "command": "/bin/df",
+                "command": "/usr/bin/df",
                 "args": [
                     "-h"
                 ]
             },
             {
-                "id": "ifconfig",
-                "description": "ifconfig",
-                "command": "/sbin/ifconfig",
+                "id": "ip_addr",
+                "description": "ip addr",
+                "command": "/usr/sbin/ip",
                 "args": [
-                    "-a"
+                    "addr"
                 ]
+            },
+            {
+                "id": "lscpu",
+                "description": "lscpu",
+                "command": "/usr/bin/lscpu"
             },
             {
                 "id": "netstat_an",
@@ -30,27 +35,11 @@
                 ]
             },
             {
-                "id": "netstat_binh",
-                "description": "netstat -binh",
-                "command": "/usr/bin/netstat",
+                "id": "timedatectl_timesync_status",
+                "description": "timedatectl timesync-status",
+                "command": "/usr/bin/timedatectl",
                 "args": [
-                    "-binh"
-                ]
-            },
-            {
-                "id": "ntpctl_sa",
-                "description": "ntpctl -sa",
-                "command": "/usr/sbin/ntpctl",
-                "args": [
-                    "-sa"
-                ]
-            },
-            {
-                "id": "sysctl_hw",
-                "description": "sysctl hw",
-                "command": "/sbin/sysctl",
-                "args": [
-                    "hw"
+                    "timesync-status"
                 ]
             },
             {
@@ -58,7 +47,8 @@
                 "description": "top",
                 "command": "/usr/bin/top",
                 "args": [
-                    "-b1"
+                    "-b",
+                    "-n1"
                 ]
             },
             {
@@ -70,14 +60,6 @@
                 "id": "vmstat",
                 "description": "vmstat",
                 "command": "/usr/bin/vmstat"
-            },
-            {
-                "id": "vmstat_i",
-                "description": "vmstat -i",
-                "command": "/usr/bin/vmstat",
-                "args": [
-                    "-i"
-                ]
             },
             {
                 "id": "w",
