@@ -62,6 +62,14 @@
                 ]
             },
             {
+                "id": "uname_a",
+                "description": "uname -a",
+                "command": "/usr/bin/uname"
+                "args": [
+                    "-a"
+                ]
+            },
+            {
                 "id": "uptime",
                 "description": "uptime",
                 "command": "/usr/bin/uptime"
