@@ -64,7 +64,7 @@
             {
                 "id": "uname_a",
                 "description": "uname -a",
-                "command": "/usr/bin/uname"
+                "command": "/usr/bin/uname",
                 "args": [
                     "-a"
                 ]
