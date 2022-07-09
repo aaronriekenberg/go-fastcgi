@@ -54,6 +54,14 @@
                 ]
             },
             {
+                "id": "sysctl_machdep",
+                "description": "sysctl machdep",
+                "command": "/sbin/sysctl",
+                "args": [
+                    "machdep"
+                ]
+            },
+            {
                 "id": "top",
                 "description": "top",
                 "command": "/usr/bin/top",
