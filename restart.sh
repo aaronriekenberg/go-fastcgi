@@ -8,4 +8,6 @@ sleep 2
 
 export PATH=${HOME}/bin:$PATH
 
-nohup ./go-fastcgi ./configfiles/config.json > output 2>&1 &
+CONFIG_FILE="./configfiles/$(uname | tr '[:upper:]' '[:lower:]')-config.json"
+
+nohup ./go-fastcgi $CONFIG_FILE > output 2>&1 &

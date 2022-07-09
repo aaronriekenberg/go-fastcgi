@@ -38,11 +38,11 @@
                 ]
             },
             {
-                "id": "ntpctl_sa",
-                "description": "ntpctl -sa",
-                "command": "/usr/sbin/ntpctl",
+                "id": "ntpq",
+                "description": "ntpq -pn",
+                "command": "/usr/sbin/ntpq",
                 "args": [
-                    "-sa"
+                    "-pn"
                 ]
             },
             {
