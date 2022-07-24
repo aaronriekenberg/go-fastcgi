@@ -26,7 +26,7 @@ func createListener(
 
 	os.Remove(serverConfiguration.UnixSocketPath)
 
-	// needed so group www has rwx permission on the socket.
+	// Umask idea from https://github.com/golang/go/issues/11822#issuecomment-123850227
 	previousUmask := syscall.Umask(umaskInt)
 	log.Printf("previousUmask = %03O", previousUmask)
 	defer syscall.Umask(previousUmask)
