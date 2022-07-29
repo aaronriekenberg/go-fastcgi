@@ -3,7 +3,7 @@ package utils
 import "time"
 
 const (
-	ContentTypeHeaderKey       = "content-type"
+	ContentTypeHeaderKey       = "Content-Type"
 	ContentTypeApplicationJSON = "application/json"
 )
 
