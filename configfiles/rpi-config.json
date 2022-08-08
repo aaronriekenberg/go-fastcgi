@@ -5,6 +5,17 @@
         "semaphoreAcquireTimeoutMilliseconds": 200,
         "commands": [
             {
+                "id": "chronyc_sources",
+                "description": "chronyc sources",
+                "command": "/usr/bin/chronyc",
+                "args": [
+                    "-n",
+                    "sources",
+                    "-a",
+                    "-v"
+                ]
+            },
+            {
                 "id": "df",
                 "description": "df",
                 "command": "/usr/bin/df",
@@ -38,14 +49,6 @@
                 "id": "pitemp",
                 "description": "pitemp",
                 "command": "/home/aaron/repo/raspberrypi/pitemp.sh"
-            },
-            {
-                "id": "timedatectl_timesync_status",
-                "description": "timedatectl timesync-status",
-                "command": "/usr/bin/timedatectl",
-                "args": [
-                    "timesync-status"
-                ]
             },
             {
                 "id": "top",
