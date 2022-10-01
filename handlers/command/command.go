@@ -72,10 +72,10 @@ func (commandHandler *commandHandler) releaseCommandSemaphore() {
 }
 
 type commandAPIResponse struct {
-	CommandInfo     *config.CommandInfo `json:"commandInfo"`
-	Now             string              `json:"now"`
-	CommandDuration string              `json:"commandDuration"`
-	CommandOutput   string              `json:"commandOutput"`
+	CommandInfo                 *config.CommandInfo `json:"commandInfo"`
+	Now                         string              `json:"now"`
+	CommandDurationMilliseconds int64               `json:"commandDurationMilliseconds"`
+	CommandOutput               string              `json:"commandOutput"`
 }
 
 func (commandHandler *commandHandler) runCommand(ctx context.Context, commandInfo *config.CommandInfo) (response *commandAPIResponse) {
@@ -95,6 +95,8 @@ func (commandHandler *commandHandler) runCommand(ctx context.Context, commandInf
 		ctx, commandInfo.Command, commandInfo.Args...).CombinedOutput()
 	commandEndTime := time.Now()
 
+	commandDuration := commandEndTime.Sub(commandStartTime)
+
 	var commandOutput string
 	if err != nil {
 		commandOutput = fmt.Sprintf("command error %v", err)
@@ -102,14 +104,11 @@ func (commandHandler *commandHandler) runCommand(ctx context.Context, commandInf
 		commandOutput = string(rawCommandOutput)
 	}
 
-	commandDuration := fmt.Sprintf("%.9f sec",
-		commandEndTime.Sub(commandStartTime).Seconds())
-
 	response = &commandAPIResponse{
-		CommandInfo:     commandInfo,
-		Now:             utils.FormatTime(commandEndTime),
-		CommandDuration: commandDuration,
-		CommandOutput:   commandOutput,
+		CommandInfo:                 commandInfo,
+		Now:                         utils.FormatTime(commandEndTime),
+		CommandDurationMilliseconds: commandDuration.Milliseconds(),
+		CommandOutput:               commandOutput,
 	}
 	return
 }
