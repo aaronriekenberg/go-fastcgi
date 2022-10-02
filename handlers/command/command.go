@@ -25,10 +25,23 @@ type commandHandler struct {
 
 func CreateCommandHandler(configuration *config.Configuration, serveMux *http.ServeMux) {
 	commandConfiguration := &configuration.CommandConfiguration
+
+	requestTimeout, err := time.ParseDuration(commandConfiguration.RequestTimeoutDuration)
+	if err != nil {
+		log.Fatalf("error parsing RequestTimeoutDuration %q", commandConfiguration.RequestTimeoutDuration)
+	}
+
+	semaphoreAcquireTimeout, err := time.ParseDuration(commandConfiguration.SemaphoreAcquireTimeoutDuration)
+	if err != nil {
+		log.Fatalf("error parsing SemaphoreAcquireTimeoutDuration %q", commandConfiguration.SemaphoreAcquireTimeoutDuration)
+	}
+
+	log.Printf("CreateCommandHandler requestTimeout = %v semaphoreAcquireTimeout = %v", requestTimeout, semaphoreAcquireTimeout)
+
 	commandHandler := &commandHandler{
 		commandSemaphore:        semaphore.NewWeighted(commandConfiguration.MaxConcurrentCommands),
-		requestTimeout:          time.Duration(commandConfiguration.RequestTimeoutMilliseconds) * time.Millisecond,
-		semaphoreAcquireTimeout: time.Duration(commandConfiguration.SemaphoreAcquireTimeoutMilliseconds) * time.Millisecond,
+		requestTimeout:          requestTimeout,
+		semaphoreAcquireTimeout: semaphoreAcquireTimeout,
 	}
 
 	serveMux.Handle(

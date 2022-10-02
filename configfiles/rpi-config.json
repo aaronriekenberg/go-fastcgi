@@ -1,8 +1,8 @@
 {
     "commandConfiguration": {
         "maxConcurrentCommands": 10,
-        "requestTimeoutMilliseconds": 2000,
-        "semaphoreAcquireTimeoutMilliseconds": 200,
+        "requestTimeoutDuration": "2s",
+        "semaphoreAcquireTimeoutDuration": "200ms",
         "commands": [
             {
                 "id": "chronyc_sources",

@@ -19,10 +19,10 @@ type CommandInfo struct {
 }
 
 type CommandConfiguration struct {
-	MaxConcurrentCommands               int64         `json:"maxConcurrentCommands"`
-	RequestTimeoutMilliseconds          int           `json:"requestTimeoutMilliseconds"`
-	SemaphoreAcquireTimeoutMilliseconds int           `json:"semaphoreAcquireTimeoutMilliseconds"`
-	Commands                            []CommandInfo `json:"commands"`
+	MaxConcurrentCommands           int64         `json:"maxConcurrentCommands"`
+	RequestTimeoutDuration          string        `json:"requestTimeoutDuration"`
+	SemaphoreAcquireTimeoutDuration string        `json:"semaphoreAcquireTimeoutDuration"`
+	Commands                        []CommandInfo `json:"commands"`
 }
 
 type Configuration struct {
