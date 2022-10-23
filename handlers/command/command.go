@@ -125,9 +125,10 @@ func (commandHandler *commandHandler) runCommand(ctx context.Context, commandInf
 	}
 	return
 }
+
 func (commandHandler *commandHandler) commandAPIHandlerFunc(commandInfo config.CommandInfo) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx, cancel := context.WithTimeout(context.Background(), commandHandler.requestTimeout)
+		ctx, cancel := context.WithTimeout(r.Context(), commandHandler.requestTimeout)
 		defer cancel()
 
 		commandAPIResponse := commandHandler.runCommand(ctx, &commandInfo)
