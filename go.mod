@@ -3,8 +3,8 @@ module github.com/aaronriekenberg/go-fastcgi
 go 1.19
 
 require (
-	github.com/kr/pretty v0.3.0
-	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
+	github.com/kr/pretty v0.3.1
+	golang.org/x/sync v0.1.0
 )
 
 require (
