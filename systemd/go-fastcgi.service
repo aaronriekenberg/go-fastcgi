@@ -7,6 +7,7 @@ AssertPathExists=%h/go-fastcgi/go-fastcgi
 WorkingDirectory=%h/go-fastcgi
 ExecStart=%h/go-fastcgi/go-fastcgi ./configfiles/%H-config.json
 Restart=always
+UMask=007
 
 [Install]
 WantedBy=default.target

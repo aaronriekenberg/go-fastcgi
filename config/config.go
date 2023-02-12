@@ -6,9 +6,17 @@ import (
 	"os"
 )
 
-type ServerConfiguration struct {
+type FastCGIServerConfiguration struct {
 	UnixSocketPath string `json:"unixSocketPath"`
-	UmaskOctal     string `json:"umaskOctal"`
+}
+
+type H2CServerConfiguration struct {
+	UnixSocketPath string `json:"unixSocketPath"`
+}
+
+type ServerConfiguration struct {
+	FastCGIServerConfiguration *FastCGIServerConfiguration `json:"fastCGIServerConfiguration"`
+	H2CServerConfiguration     *H2CServerConfiguration     `json:"h2cServerConfiguration"`
 }
 
 type CommandInfo struct {

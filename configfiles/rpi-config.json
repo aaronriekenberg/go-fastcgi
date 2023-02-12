@@ -77,7 +77,8 @@
         ]
     },
     "serverConfiguration": {
-        "unixSocketPath": "/var/www/run/go-fastcgi/socket",
-        "umaskOctal": "007"
+        "h2cServerConfiguration": {
+            "unixSocketPath": "/var/www/run/cgi/socket"
+        }
     }
 }
