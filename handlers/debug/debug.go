@@ -78,5 +78,5 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 }
 
 func CreateDebugHandler(configuration *config.Configuration, serveMux *http.ServeMux) {
-	serveMux.Handle("/cgi-bin/debug/request_info", requestInfoHandlerFunc())
+	serveMux.Handle("/cgi-bin/request_info", requestInfoHandlerFunc())
 }
