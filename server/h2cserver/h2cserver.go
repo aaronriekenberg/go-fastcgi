@@ -1,4 +1,4 @@
-package h2c
+package h2cserver
 
 import (
 	"fmt"
@@ -15,9 +15,11 @@ func createListener(
 	config *config.H2CServerConfiguration,
 ) (net.Listener, error) {
 
-	os.Remove(config.UnixSocketPath)
+	if config.Network == "unix" {
+		os.Remove(config.ListenAddress)
+	}
 
-	listener, err := net.Listen("unix", config.UnixSocketPath)
+	listener, err := net.Listen(config.Network, config.ListenAddress)
 	if err != nil {
 		return nil, fmt.Errorf("net.Listen err = %w", err)
 	}
@@ -30,7 +32,7 @@ func runConnectionHandler(
 	handler http.Handler,
 	http2Server *http2.Server,
 ) {
-	log.Printf("begin h2c.runConnectionHandler")
+	log.Printf("begin h2cserver.runConnectionHandler")
 
 	defer conn.Close()
 
@@ -40,16 +42,14 @@ func runConnectionHandler(
 			Handler: handler,
 		})
 
-	log.Printf("end h2c.runConnectionHandler")
+	log.Printf("end h2cserver.runConnectionHandler")
 }
 
-func RunServer(
+func Run(
 	config *config.H2CServerConfiguration,
 	serveHandler http.Handler,
 ) {
-	log.Printf("begin h2c.RunServer UnixSocketPath = %q",
-		config.UnixSocketPath,
-	)
+	log.Printf("begin h2cserver.Run config = %+v", *config)
 
 	listener, err := createListener(config)
 	if err != nil {

@@ -7,16 +7,24 @@ import (
 )
 
 type FastCGIServerConfiguration struct {
-	UnixSocketPath string `json:"unixSocketPath"`
+	Network       string `json:"network"`
+	ListenAddress string `json:"listenAddress"`
 }
 
 type H2CServerConfiguration struct {
-	UnixSocketPath string `json:"unixSocketPath"`
+	Network       string `json:"network"`
+	ListenAddress string `json:"listenAddress"`
+}
+
+type HTTPServerConfiguration struct {
+	Network       string `json:"network"`
+	ListenAddress string `json:"listenAddress"`
 }
 
 type ServerConfiguration struct {
 	FastCGIServerConfiguration *FastCGIServerConfiguration `json:"fastCGIServerConfiguration"`
 	H2CServerConfiguration     *H2CServerConfiguration     `json:"h2cServerConfiguration"`
+	HTTPServerConfiguration    *HTTPServerConfiguration    `json:"httpServerConfiguration"`
 }
 
 type CommandInfo struct {

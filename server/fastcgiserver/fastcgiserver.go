@@ -1,4 +1,4 @@
-package fastcgi
+package fastcgiserver
 
 import (
 	"fmt"
@@ -15,9 +15,11 @@ func createListener(
 	config *config.FastCGIServerConfiguration,
 ) (net.Listener, error) {
 
-	os.Remove(config.UnixSocketPath)
+	if config.Network == "unix" {
+		os.Remove(config.ListenAddress)
+	}
 
-	listener, err := net.Listen("unix", config.UnixSocketPath)
+	listener, err := net.Listen(config.Network, config.ListenAddress)
 	if err != nil {
 		return nil, fmt.Errorf("net.Listen err = %w", err)
 	}
@@ -25,13 +27,11 @@ func createListener(
 	return listener, nil
 }
 
-func RunServer(
+func Run(
 	config *config.FastCGIServerConfiguration,
 	serveHandler http.Handler,
 ) {
-	log.Printf("begin fastcgi.RunServer UnixSocketPath = %q",
-		config.UnixSocketPath,
-	)
+	log.Printf("begin fastcgiserver.Run config = %+v", *config)
 
 	listener, err := createListener(config)
 	if err != nil {
