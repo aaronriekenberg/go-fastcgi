@@ -1,4 +1,4 @@
-package debug
+package requestinfo
 
 import (
 	"bytes"
@@ -77,6 +77,6 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 	}
 }
 
-func CreateDebugHandler(configuration *config.Configuration, serveMux *http.ServeMux) {
+func CreateRequestInfoHandler(configuration *config.Configuration, serveMux *http.ServeMux) {
 	serveMux.Handle("/cgi-bin/request_info", requestInfoHandlerFunc())
 }

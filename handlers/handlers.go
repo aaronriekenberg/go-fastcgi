@@ -5,7 +5,7 @@ import (
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
 	"github.com/aaronriekenberg/go-fastcgi/handlers/command"
-	"github.com/aaronriekenberg/go-fastcgi/handlers/debug"
+	"github.com/aaronriekenberg/go-fastcgi/handlers/requestinfo"
 )
 
 func CreateHandlers(configuration *config.Configuration) http.Handler {
@@ -13,7 +13,7 @@ func CreateHandlers(configuration *config.Configuration) http.Handler {
 
 	command.CreateCommandHandler(configuration, serveMux)
 
-	debug.CreateDebugHandler(configuration, serveMux)
+	requestinfo.CreateRequestInfoHandler(configuration, serveMux)
 
 	return serveMux
 }
