@@ -86,7 +86,7 @@
         ]
     },
     "serverConfiguration": {
-        "h2cServerConfiguration": {
+        "httpServerConfiguration": {
             "network": "unix",
             "listenAddress": "/var/www/run/cgi/socket"
         }
