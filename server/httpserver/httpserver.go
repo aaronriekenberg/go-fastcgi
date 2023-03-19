@@ -17,13 +17,16 @@ type connWrapper struct {
 }
 
 func (cw *connWrapper) Close() error {
-	if cw != nil {
-		connectionID := cw.connectionID
-
-		log.Printf("Removing HTTP1 connection connectionID = %v", connectionID)
-
-		connection.ConnectionManagerInstance().RemoveConnection(connectionID)
+	if cw == nil {
+		nilConn := (net.Conn)(nil)
+		return nilConn.Close()
 	}
+
+	connectionID := cw.connectionID
+
+	log.Printf("Removing HTTP1 connection connectionID = %v", connectionID)
+
+	connection.ConnectionManagerInstance().RemoveConnection(connectionID)
 
 	return cw.Conn.Close()
 }
@@ -33,6 +36,11 @@ type listenerWrapper struct {
 }
 
 func (lw *listenerWrapper) Accept() (net.Conn, error) {
+	if lw == nil {
+		nilListner := (net.Listener)(nil)
+		return nilListner.Accept()
+	}
+
 	conn, err := lw.Listener.Accept()
 
 	if err != nil {
