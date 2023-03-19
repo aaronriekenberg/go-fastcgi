@@ -1,7 +1,6 @@
 package httpserver
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"net"
@@ -19,7 +18,7 @@ type connWrapper struct {
 
 func (cw *connWrapper) Close() error {
 	if cw == nil {
-		return errors.New("connWrapper.Close called on nil instance")
+		return fmt.Errorf("connWrapper.Close called on nil instance")
 	}
 
 	connectionID := cw.connectionID
@@ -37,7 +36,7 @@ type listenerWrapper struct {
 
 func (lw *listenerWrapper) Accept() (net.Conn, error) {
 	if lw == nil {
-		return nil, errors.New("listenerWrapper.Accept called on nil instance")
+		return nil, fmt.Errorf("listenerWrapper.Accept called on nil instance")
 	}
 
 	conn, err := lw.Listener.Accept()
