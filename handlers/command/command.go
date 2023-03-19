@@ -85,10 +85,10 @@ func (commandHandler *commandHandler) releaseCommandSemaphore() {
 }
 
 type commandAPIResponse struct {
-	CommandInfo                 *config.CommandInfo `json:"commandInfo"`
+	CommandInfo                 *config.CommandInfo `json:"command_info"`
 	Now                         string              `json:"now"`
-	CommandDurationMilliseconds int64               `json:"commandDurationMilliseconds"`
-	CommandOutput               string              `json:"commandOutput"`
+	CommandDurationMilliseconds int64               `json:"command_duration_ms"`
+	CommandOutput               string              `json:"command_output"`
 }
 
 func (commandHandler *commandHandler) runCommand(ctx context.Context, commandInfo *config.CommandInfo) (response *commandAPIResponse) {
