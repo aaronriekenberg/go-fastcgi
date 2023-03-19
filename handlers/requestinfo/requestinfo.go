@@ -12,13 +12,13 @@ import (
 )
 
 type requestFields struct {
-	BodyContentLength int64  `json:"body_content_length"`
-	Close             bool   `json:"close"`
-	Host              string `json:"host"`
-	Method            string `json:"method"`
-	Protocol          string `json:"protocol"`
-	RemoteAddress     string `json:"remote_address"`
-	URL               string `json:"url"`
+	Close         bool   `json:"close"`
+	ContentLength int64  `json:"content_length"`
+	Host          string `json:"host"`
+	Method        string `json:"method"`
+	Protocol      string `json:"protocol"`
+	RemoteAddress string `json:"remote_address"`
+	URL           string `json:"url"`
 }
 
 type requestInfoData struct {
@@ -49,13 +49,13 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 
 		response := &requestInfoData{
 			RequestFields: requestFields{
-				BodyContentLength: r.ContentLength,
-				Close:             r.Close,
-				Host:              r.Host,
-				Method:            r.Method,
-				Protocol:          r.Proto,
-				RemoteAddress:     r.RemoteAddr,
-				URL:               urlString,
+				Close:         r.Close,
+				ContentLength: r.ContentLength,
+				Host:          r.Host,
+				Method:        r.Method,
+				Protocol:      r.Proto,
+				RemoteAddress: r.RemoteAddr,
+				URL:           urlString,
 			},
 			RequestHeaders: httpHeaderToRequestHeaders(r.Header),
 		}
