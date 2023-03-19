@@ -1,0 +1,20 @@
+{
+    "commandConfiguration": {
+        "maxConcurrentCommands": 10,
+        "requestTimeoutDuration": "2s",
+        "semaphoreAcquireTimeoutDuration": "200ms",
+        "commands": [
+            {
+                "id": "w",
+                "description": "w",
+                "command": "/usr/bin/w"
+            }
+        ]
+    },
+    "serverConfiguration": {
+        "h2cServerConfiguration": {
+            "network": "unix",
+            "listenAddress": "socket"
+        }
+    }
+}

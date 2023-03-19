@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
+	"github.com/aaronriekenberg/go-fastcgi/connection"
 	"golang.org/x/net/http2"
 )
 
@@ -32,9 +33,14 @@ func runConnectionHandler(
 	handler http.Handler,
 	http2Server *http2.Server,
 ) {
-	log.Printf("begin h2cserver.runConnectionHandler")
-
 	defer conn.Close()
+
+	connectionManager := connection.ConnectionManagerInstance()
+	connectionID := connectionManager.AddConnection(connection.HTTP2)
+
+	defer connectionManager.RemoveConnection(connectionID)
+
+	log.Printf("begin h2cserver.runConnectionHandler connectionID = %v", connectionID)
 
 	http2Server.ServeConn(
 		conn,
@@ -42,7 +48,7 @@ func runConnectionHandler(
 			Handler: handler,
 		})
 
-	log.Printf("end h2cserver.runConnectionHandler")
+	log.Printf("end h2cserver.runConnectionHandler connectionID = %v", connectionID)
 }
 
 func Run(
