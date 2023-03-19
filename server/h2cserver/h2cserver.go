@@ -1,6 +1,7 @@
 package h2cserver
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -45,8 +46,10 @@ func runConnectionHandler(
 	http2Server.ServeConn(
 		conn,
 		&http2.ServeConnOpts{
+			Context: context.WithValue(context.Background(), connection.ConnectionIDContextKey, connectionID),
 			Handler: handler,
-		})
+		},
+	)
 
 	log.Printf("end h2cserver.runConnectionHandler connectionID = %v", connectionID)
 }

@@ -1,6 +1,7 @@
 package httpserver
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -84,7 +85,17 @@ func Run(
 		log.Fatalf("createListener err = %v", err)
 	}
 
-	httpServer := &http.Server{Handler: serveHandler}
+	httpServer := &http.Server{
+		ConnContext: func(ctx context.Context, c net.Conn) context.Context {
+			connWrapper, ok := c.(*connWrapper)
+			if ok {
+				connectionID := connWrapper.connectionID
+				return context.WithValue(ctx, connection.ConnectionIDContextKey, connectionID)
+			}
+			return ctx
+		},
+		Handler: serveHandler,
+	}
 
 	httpServer.Serve(listener)
 }

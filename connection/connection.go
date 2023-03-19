@@ -5,7 +5,12 @@ import (
 	"time"
 )
 
-type ConnectionID uint64
+type ConnectionID int64
+
+type connectionIDContextKey struct {
+}
+
+var ConnectionIDContextKey = &connectionIDContextKey{}
 
 type ConnectionType int
 

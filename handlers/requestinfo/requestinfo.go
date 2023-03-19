@@ -5,12 +5,15 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
+	"github.com/aaronriekenberg/go-fastcgi/connection"
 	"github.com/aaronriekenberg/go-fastcgi/utils"
 )
 
 type requestFields struct {
+	ConnectionID  string `json:"connection_id"`
 	Close         bool   `json:"close"`
 	ContentLength int64  `json:"content_length"`
 	Host          string `json:"host"`
@@ -46,8 +49,15 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 			urlString = "(null)"
 		}
 
+		connectionID := "(null)"
+		value, ok := r.Context().Value(connection.ConnectionIDContextKey).(connection.ConnectionID)
+		if ok {
+			connectionID = strconv.FormatInt(int64(value), 10)
+		}
+
 		response := &requestInfoData{
 			RequestFields: requestFields{
+				ConnectionID:  connectionID,
 				Close:         r.Close,
 				ContentLength: r.ContentLength,
 				Host:          r.Host,
