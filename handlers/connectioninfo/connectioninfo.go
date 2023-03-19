@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/aaronriekenberg/go-fastcgi/connection"
@@ -40,6 +41,10 @@ func CreateConnectionInfoHandler(serveMux *http.ServeMux) {
 
 			connectionDTOs = append(connectionDTOs, cdto)
 		}
+
+		sort.Slice(connectionDTOs, func(i, j int) bool {
+			return connectionDTOs[i].ID < connectionDTOs[j].ID
+		})
 
 		response := connectionInfoResponse{
 			NumConnections: len(connectionDTOs),

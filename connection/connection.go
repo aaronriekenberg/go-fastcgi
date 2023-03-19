@@ -10,14 +10,19 @@ type ConnectionID uint64
 type ConnectionType int
 
 const (
-	HTTP2 ConnectionType = iota
+	HTTP1 ConnectionType = iota
+	HTTP2
 )
 
 func (ct ConnectionType) String() string {
 	switch ct {
+	case HTTP1:
+		return "HTTP1"
+
 	case HTTP2:
 		return "HTTP2"
 	}
+
 	return "(Unknown)"
 }
 

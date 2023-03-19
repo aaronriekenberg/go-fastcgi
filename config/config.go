@@ -6,13 +6,19 @@ import (
 	"os"
 )
 
+type HTTPServerConfiguration struct {
+	Network       string `json:"network"`
+	ListenAddress string `json:"listenAddress"`
+}
+
 type H2CServerConfiguration struct {
 	Network       string `json:"network"`
 	ListenAddress string `json:"listenAddress"`
 }
 
 type ServerConfiguration struct {
-	H2CServerConfiguration *H2CServerConfiguration `json:"h2cServerConfiguration"`
+	HTTPServerConfiguration *HTTPServerConfiguration `json:"httpServerConfiguration"`
+	H2CServerConfiguration  *H2CServerConfiguration  `json:"h2cServerConfiguration"`
 }
 
 type CommandInfo struct {
