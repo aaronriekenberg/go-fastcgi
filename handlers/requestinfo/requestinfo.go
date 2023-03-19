@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/aaronriekenberg/go-fastcgi/config"
 	"github.com/aaronriekenberg/go-fastcgi/utils"
 )
 
@@ -72,6 +71,6 @@ func requestInfoHandlerFunc() http.HandlerFunc {
 	}
 }
 
-func CreateRequestInfoHandler(configuration *config.Configuration, serveMux *http.ServeMux) {
+func CreateRequestInfoHandler(serveMux *http.ServeMux) {
 	serveMux.Handle("/cgi-bin/request_info", requestInfoHandlerFunc())
 }

@@ -16,7 +16,7 @@ func CreateHandlers(configuration *config.Configuration) http.Handler {
 
 	connectioninfo.CreateConnectionInfoHandler(serveMux)
 
-	requestinfo.CreateRequestInfoHandler(configuration, serveMux)
+	requestinfo.CreateRequestInfoHandler(serveMux)
 
 	return serveMux
 }
