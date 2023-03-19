@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
@@ -22,6 +23,8 @@ func awaitShutdownSignal() {
 
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
+
+	log.Printf("begin main go version = %q GOOS = %q GOARCH = %q", runtime.Version(), runtime.GOOS, runtime.GOARCH)
 
 	if len(os.Args) != 2 {
 		log.Fatalf("Usage: %v <config json file>", os.Args[0])
