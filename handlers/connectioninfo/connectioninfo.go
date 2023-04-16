@@ -17,11 +17,12 @@ type connectionDTO struct {
 	ConnectionType string `json:"connection_type"`
 	Age            string `json:"age"`
 	CreationTime   string `json:"creation_time"`
+	Requests       uint64 `json:"requests"`
 }
 
 type connectionInfoResponse struct {
-	NumConnections int             `json:"num_connections"`
-	Connections    []connectionDTO `json:"connections"`
+	NumConnections int              `json:"num_connections"`
+	Connections    []*connectionDTO `json:"connections"`
 }
 
 func CreateConnectionInfoHandler(serveMux *http.ServeMux) {
@@ -29,14 +30,15 @@ func CreateConnectionInfoHandler(serveMux *http.ServeMux) {
 
 		connections := connection.ConnectionManagerInstance().Connections()
 
-		connectionDTOs := make([]connectionDTO, 0, len(connections))
+		connectionDTOs := make([]*connectionDTO, 0, len(connections))
 
 		for _, connection := range connections {
-			cdto := connectionDTO{
+			cdto := &connectionDTO{
 				ID:             uint64(connection.ID()),
 				ConnectionType: connection.ConnectionType().String(),
 				Age:            time.Since(connection.CreationTime()).Truncate(time.Millisecond).String(),
 				CreationTime:   utils.FormatTime(connection.CreationTime()),
+				Requests:       connection.Requests(),
 			}
 
 			connectionDTOs = append(connectionDTOs, cdto)

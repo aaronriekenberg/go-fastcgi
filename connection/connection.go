@@ -2,6 +2,7 @@ package connection
 
 import (
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -35,28 +36,36 @@ type Connection interface {
 	ID() ConnectionID
 	ConnectionType() ConnectionType
 	CreationTime() time.Time
+	Requests() uint64
 }
 
 type connection struct {
 	id             ConnectionID
 	connectionType ConnectionType
 	creationTime   time.Time
+	requests       atomic.Uint64
 }
 
-func (c connection) ID() ConnectionID {
+func (c *connection) ID() ConnectionID {
 	return c.id
 }
 
-func (c connection) ConnectionType() ConnectionType {
+func (c *connection) ConnectionType() ConnectionType {
 	return c.connectionType
 }
 
-func (c connection) CreationTime() time.Time {
+func (c *connection) CreationTime() time.Time {
 	return c.creationTime
+}
+
+func (c *connection) Requests() uint64 {
+	return c.requests.Load()
 }
 
 type ConnectionManager interface {
 	AddConnection(connectionType ConnectionType) ConnectionID
+
+	IncrementRequestsForConnection(connectionID ConnectionID)
 
 	RemoveConnection(id ConnectionID)
 
@@ -65,13 +74,13 @@ type ConnectionManager interface {
 
 type connectionManager struct {
 	mutex            sync.RWMutex
-	idToConnection   map[ConnectionID]connection
+	idToConnection   map[ConnectionID]*connection
 	nextConnectionID ConnectionID
 }
 
 func newConnectionManager() connectionManager {
 	return connectionManager{
-		idToConnection:   make(map[ConnectionID]connection),
+		idToConnection:   make(map[ConnectionID]*connection),
 		nextConnectionID: 1,
 	}
 }
@@ -83,13 +92,23 @@ func (cm *connectionManager) AddConnection(connectionType ConnectionType) Connec
 	id := cm.nextConnectionID
 	cm.nextConnectionID++
 
-	cm.idToConnection[id] = connection{
+	cm.idToConnection[id] = &connection{
 		id:             id,
 		creationTime:   time.Now(),
 		connectionType: connectionType,
 	}
 
 	return id
+}
+
+func (cm *connectionManager) IncrementRequestsForConnection(connectionID ConnectionID) {
+	cm.mutex.RLock()
+	defer cm.mutex.RUnlock()
+
+	connection := cm.idToConnection[connectionID]
+	if connection != nil {
+		connection.requests.Add(1)
+	}
 }
 
 func (cm *connectionManager) RemoveConnection(id ConnectionID) {

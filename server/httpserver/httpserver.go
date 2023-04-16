@@ -76,7 +76,7 @@ func createListener(
 
 func Run(
 	config *config.HTTPServerConfiguration,
-	serveHandler http.Handler,
+	handler http.Handler,
 ) {
 	log.Printf("begin httpserver.Run config = %+v", *config)
 
@@ -84,6 +84,15 @@ func Run(
 	if err != nil {
 		log.Fatalf("createListener err = %v", err)
 	}
+	connectionManager := connection.ConnectionManagerInstance()
+
+	wrappedHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		connectionID, ok := r.Context().Value(connection.ConnectionIDContextKey).(connection.ConnectionID)
+		if ok {
+			connectionManager.IncrementRequestsForConnection(connectionID)
+		}
+		handler.ServeHTTP(w, r)
+	})
 
 	httpServer := &http.Server{
 		ConnContext: func(ctx context.Context, c net.Conn) context.Context {
@@ -94,7 +103,7 @@ func Run(
 			}
 			return ctx
 		},
-		Handler: serveHandler,
+		Handler: wrappedHandler,
 	}
 
 	httpServer.Serve(listener)

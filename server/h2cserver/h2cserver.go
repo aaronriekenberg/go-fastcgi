@@ -37,17 +37,23 @@ func runConnectionHandler(
 	defer conn.Close()
 
 	connectionManager := connection.ConnectionManagerInstance()
+
 	connectionID := connectionManager.AddConnection(connection.HTTP2)
 
 	defer connectionManager.RemoveConnection(connectionID)
 
 	log.Printf("begin h2cserver.runConnectionHandler connectionID = %v", connectionID)
 
+	wrappedHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		connectionManager.IncrementRequestsForConnection(connectionID)
+		handler.ServeHTTP(w, r)
+	})
+
 	http2Server.ServeConn(
 		conn,
 		&http2.ServeConnOpts{
 			Context: context.WithValue(context.Background(), connection.ConnectionIDContextKey, connectionID),
-			Handler: handler,
+			Handler: wrappedHandler,
 		},
 	)
 
