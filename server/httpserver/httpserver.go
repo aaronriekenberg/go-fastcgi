@@ -10,6 +10,7 @@ import (
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
 	"github.com/aaronriekenberg/go-fastcgi/connection"
+	"github.com/aaronriekenberg/go-fastcgi/request"
 )
 
 type connWrapper struct {
@@ -91,6 +92,12 @@ func Run(
 		if ok {
 			connectionManager.IncrementRequestsForConnection(connectionID)
 		}
+
+		requestID := request.RequestIDFactoryInstance().NextRequestID()
+
+		ctx := r.Context()
+		r = r.WithContext(context.WithValue(ctx, request.RequestIDContextKey, requestID))
+
 		handler.ServeHTTP(w, r)
 	})
 

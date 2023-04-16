@@ -36,14 +36,14 @@ type Connection interface {
 	ID() ConnectionID
 	ConnectionType() ConnectionType
 	CreationTime() time.Time
-	Requests() uint64
+	Requests() int64
 }
 
 type connection struct {
 	id             ConnectionID
 	connectionType ConnectionType
 	creationTime   time.Time
-	requests       atomic.Uint64
+	requests       atomic.Int64
 }
 
 func (c *connection) ID() ConnectionID {
@@ -58,7 +58,7 @@ func (c *connection) CreationTime() time.Time {
 	return c.creationTime
 }
 
-func (c *connection) Requests() uint64 {
+func (c *connection) Requests() int64 {
 	return c.requests.Load()
 }
 

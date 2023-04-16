@@ -13,11 +13,11 @@ import (
 )
 
 type connectionDTO struct {
-	ID             uint64 `json:"id"`
+	ID             int64  `json:"id"`
 	ConnectionType string `json:"connection_type"`
 	Age            string `json:"age"`
 	CreationTime   string `json:"creation_time"`
-	Requests       uint64 `json:"requests"`
+	Requests       int64  `json:"requests"`
 }
 
 type connectionInfoResponse struct {
@@ -34,7 +34,7 @@ func CreateConnectionInfoHandler(serveMux *http.ServeMux) {
 
 		for _, connection := range connections {
 			cdto := &connectionDTO{
-				ID:             uint64(connection.ID()),
+				ID:             int64(connection.ID()),
 				ConnectionType: connection.ConnectionType().String(),
 				Age:            time.Since(connection.CreationTime()).Truncate(time.Millisecond).String(),
 				CreationTime:   utils.FormatTime(connection.CreationTime()),
