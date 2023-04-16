@@ -61,12 +61,12 @@ func runConnectionHandler(
 }
 
 func Run(
-	config *config.H2CServerConfiguration,
+	config config.H2CServerConfiguration,
 	serveHandler http.Handler,
 ) {
-	log.Printf("begin h2cserver.Run config = %+v", *config)
+	log.Printf("begin h2cserver.Run config = %+v", config)
 
-	listener, err := createListener(config)
+	listener, err := createListener(&config)
 	if err != nil {
 		log.Fatalf("createListener err = %v", err)
 	}

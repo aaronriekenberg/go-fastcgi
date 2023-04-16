@@ -15,10 +15,10 @@ func StartServer(
 ) {
 	switch {
 	case serverConfiguration.HTTPServerConfiguration != nil:
-		go httpserver.Run(serverConfiguration.HTTPServerConfiguration, serveHandler)
+		go httpserver.Run(*serverConfiguration.HTTPServerConfiguration, serveHandler)
 
 	case serverConfiguration.H2CServerConfiguration != nil:
-		go h2cserver.Run(serverConfiguration.H2CServerConfiguration, serveHandler)
+		go h2cserver.Run(*serverConfiguration.H2CServerConfiguration, serveHandler)
 
 	default:
 		log.Fatalf("unable to find configured server")

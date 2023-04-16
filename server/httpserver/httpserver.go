@@ -75,12 +75,12 @@ func createListener(
 }
 
 func Run(
-	config *config.HTTPServerConfiguration,
+	config config.HTTPServerConfiguration,
 	handler http.Handler,
 ) {
-	log.Printf("begin httpserver.Run config = %+v", *config)
+	log.Printf("begin httpserver.Run config = %+v", config)
 
-	listener, err := createListener(config)
+	listener, err := createListener(&config)
 	if err != nil {
 		log.Fatalf("createListener err = %v", err)
 	}
