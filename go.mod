@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/kr/pretty v0.3.1
-	golang.org/x/net v0.9.0
-	golang.org/x/sync v0.1.0
+	golang.org/x/net v0.10.0
+	golang.org/x/sync v0.2.0
 )
 
 require (
