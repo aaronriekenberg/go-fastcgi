@@ -52,8 +52,7 @@ func runConnectionHandler(
 
 		requestID := request.RequestIDFactoryInstance().NextRequestID()
 
-		ctx := r.Context()
-		r = r.WithContext(context.WithValue(ctx, request.RequestIDContextKey, requestID))
+		r = r.WithContext(context.WithValue(r.Context(), request.RequestIDContextKey, requestID))
 
 		handler.ServeHTTP(w, r)
 	})
