@@ -1,8 +1,9 @@
 package server
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
 	"github.com/aaronriekenberg/go-fastcgi/server/h2cserver"
@@ -21,6 +22,7 @@ func StartServer(
 		go h2cserver.Run(*serverConfiguration.H2CServerConfiguration, serveHandler)
 
 	default:
-		log.Fatalf("unable to find configured server")
+		slog.Error("unable to find configured server")
+		os.Exit(1)
 	}
 }

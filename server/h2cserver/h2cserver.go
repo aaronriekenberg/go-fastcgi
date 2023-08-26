@@ -3,7 +3,7 @@ package h2cserver
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net"
 	"net/http"
 	"os"
@@ -43,7 +43,9 @@ func runConnectionHandler(
 
 	defer connectionManager.RemoveConnection(connectionID)
 
-	log.Printf("begin h2cserver.runConnectionHandler connectionID = %v", connectionID)
+	logger := slog.Default().With("connectionID", connectionID)
+
+	logger.Info("begin h2cserver.runConnectionHandler")
 
 	wrappedHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		connectionManager.IncrementRequestsForConnection(connectionID)
@@ -64,18 +66,21 @@ func runConnectionHandler(
 		},
 	)
 
-	log.Printf("end h2cserver.runConnectionHandler connectionID = %v", connectionID)
+	logger.Info("end h2cserver.runConnectionHandler")
 }
 
 func Run(
 	config config.H2CServerConfiguration,
 	serveHandler http.Handler,
 ) {
-	log.Printf("begin h2cserver.Run config = %+v", config)
+	slog.Info("begin h2cserver.Run",
+		slog.String("config", fmt.Sprintf("%+v", config)))
 
 	listener, err := createListener(&config)
 	if err != nil {
-		log.Fatalf("createListener err = %v", err)
+		slog.Error("createListener error",
+			slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 
 	http2Server := &http2.Server{}
@@ -83,7 +88,8 @@ func Run(
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			log.Fatalf("Accept error: %v", err)
+			slog.Error("Accept error",
+				slog.String("error", err.Error()))
 		}
 
 		go runConnectionHandler(conn, serveHandler, http2Server)

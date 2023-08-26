@@ -1,39 +1,38 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 	"os"
 	"os/signal"
-	"runtime"
 	"syscall"
 
 	"github.com/aaronriekenberg/go-fastcgi/config"
 	"github.com/aaronriekenberg/go-fastcgi/handlers"
 	"github.com/aaronriekenberg/go-fastcgi/server"
-
-	"github.com/kr/pretty"
 )
 
 func awaitShutdownSignal() {
 	sig := make(chan os.Signal, 2)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 	s := <-sig
-	log.Fatalf("Signal (%v) received, stopping", s)
+	slog.Info("Signal received, stopping", "signal", s)
+	os.Exit(0)
 }
 
 func main() {
-	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds)
+	logger := slog.New(slog.NewJSONHandler(os.Stderr, nil))
+	slog.SetDefault(logger)
 
-	log.Printf("begin main go version = %q GOOS = %q GOARCH = %q", runtime.Version(), runtime.GOOS, runtime.GOARCH)
+	slog.Info("begin main")
 
 	if len(os.Args) != 2 {
-		log.Fatalf("Usage: %v <config json file>", os.Args[0])
+		slog.Error("config file required as command line arument")
+		os.Exit(1)
 	}
 
 	configFile := os.Args[1]
 
 	configuration := config.ReadConfiguration(configFile)
-	log.Printf("configuration:\n%# v", pretty.Formatter(configuration))
 
 	handler := handlers.CreateHandlers(configuration)
 

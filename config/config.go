@@ -2,7 +2,7 @@ package config
 
 import (
 	"encoding/json"
-	"log"
+	"log/slog"
 	"os"
 )
 
@@ -41,17 +41,24 @@ type Configuration struct {
 }
 
 func ReadConfiguration(configFile string) *Configuration {
-	log.Printf("reading json file %v", configFile)
+	logger := slog.Default().With("configFile", configFile)
+
+	logger.Info("begin ReadConfiguration")
 
 	source, err := os.ReadFile(configFile)
 	if err != nil {
-		log.Fatalf("error reading %v: %v", configFile, err)
+		logger.Error("ReadFile error",
+			slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 
 	var config Configuration
 	if err = json.Unmarshal(source, &config); err != nil {
-		log.Fatalf("error parsing %v: %v", configFile, err)
+		logger.Error("json.Unmarshal error",
+			slog.String("error", err.Error()))
 	}
+
+	logger.Info("end ReadConfiguration")
 
 	return &config
 }

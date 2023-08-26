@@ -3,7 +3,7 @@ package httpserver
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net"
 	"net/http"
 	"os"
@@ -25,7 +25,8 @@ func (cw *connWrapper) Close() error {
 
 	connectionID := cw.connectionID
 
-	log.Printf("Removing HTTP1 connection connectionID = %v", connectionID)
+	slog.Info("Removing HTTP1 connection",
+		slog.Any("connectionID", connectionID))
 
 	connection.ConnectionManagerInstance().RemoveConnection(connectionID)
 
@@ -49,7 +50,8 @@ func (lw *listenerWrapper) Accept() (net.Conn, error) {
 
 	connectionID := connection.ConnectionManagerInstance().AddConnection(connection.HTTP1)
 
-	log.Printf("Accepted HTTP1 connection connectionID = %v", connectionID)
+	slog.Info("Accepted HTTP1 connection",
+		slog.Any("connectionID", connectionID))
 
 	return &connWrapper{
 		connectionID: connectionID,
@@ -79,11 +81,14 @@ func Run(
 	config config.HTTPServerConfiguration,
 	handler http.Handler,
 ) {
-	log.Printf("begin httpserver.Run config = %+v", config)
+	slog.Info("begin httpserver.Run",
+		slog.String("config", fmt.Sprintf("%+v", config)))
 
 	listener, err := createListener(&config)
 	if err != nil {
-		log.Fatalf("createListener err = %v", err)
+		slog.Error("createListener error",
+			slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 	connectionManager := connection.ConnectionManagerInstance()
 

@@ -12,9 +12,9 @@
         ]
     },
     "serverConfiguration": {
-        "h2cServerConfiguration": {
-            "network": "unix",
-            "listenAddress": "socket"
+        "httpServerConfiguration": {
+            "network": "tcp",
+            "listenAddress": ":8080"
         }
     }
 }

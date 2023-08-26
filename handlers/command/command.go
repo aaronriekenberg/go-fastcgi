@@ -6,8 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 	"os/exec"
 	"time"
 
@@ -28,15 +29,25 @@ func CreateCommandHandler(configuration *config.Configuration, serveMux *http.Se
 
 	requestTimeout, err := time.ParseDuration(commandConfiguration.RequestTimeoutDuration)
 	if err != nil {
-		log.Fatalf("error parsing RequestTimeoutDuration %q", commandConfiguration.RequestTimeoutDuration)
+		slog.Error("error parsing RequestTimeoutDuration",
+			slog.String("RequestTimeoutDuration", commandConfiguration.RequestTimeoutDuration),
+			slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 
 	semaphoreAcquireTimeout, err := time.ParseDuration(commandConfiguration.SemaphoreAcquireTimeoutDuration)
 	if err != nil {
-		log.Fatalf("error parsing SemaphoreAcquireTimeoutDuration %q", commandConfiguration.SemaphoreAcquireTimeoutDuration)
+		slog.Error("error parsing SemaphoreAcquireTimeoutDuration",
+			slog.String("SemaphoreAcquireTimeoutDuration", commandConfiguration.SemaphoreAcquireTimeoutDuration),
+			slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 
-	log.Printf("CreateCommandHandler requestTimeout = %v semaphoreAcquireTimeout = %v", requestTimeout, semaphoreAcquireTimeout)
+	slog.Info("CreateCommandHandler",
+		slog.Group("config",
+			slog.String("requestTimeout", requestTimeout.String()),
+			slog.String("semaphoreAcquireTimeout", semaphoreAcquireTimeout.String())),
+	)
 
 	commandHandler := &commandHandler{
 		commandSemaphore:        semaphore.NewWeighted(commandConfiguration.MaxConcurrentCommands),
@@ -60,7 +71,9 @@ func CreateCommandHandler(configuration *config.Configuration, serveMux *http.Se
 func (commandHandler *commandHandler) getAllCommandsHandlerFunc(commandConfiguration *config.CommandConfiguration) http.HandlerFunc {
 	jsonBuffer, err := json.Marshal(commandConfiguration.Commands)
 	if err != nil {
-		log.Fatalf("getAllCommandsHandlerFunc json.Marshal err = %v", err)
+		slog.Error("getAllCommandsHandlerFunc json.Marhsal error",
+			slog.String("error", err.Error()))
+		os.Exit(1)
 	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
