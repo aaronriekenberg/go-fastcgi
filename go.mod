@@ -1,9 +1,9 @@
 module github.com/aaronriekenberg/go-fastcgi
 
-go 1.21.0
+go 1.21.1
 
 require (
-	golang.org/x/net v0.14.0
+	golang.org/x/net v0.15.0
 	golang.org/x/sync v0.3.0
 )
 
