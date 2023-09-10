@@ -2,10 +2,11 @@ package connectioninfo
 
 import (
 	"bytes"
+	"cmp"
 	"encoding/json"
 	"io"
 	"net/http"
-	"sort"
+	"slices"
 	"time"
 
 	"github.com/aaronriekenberg/go-fastcgi/connection"
@@ -44,8 +45,8 @@ func CreateConnectionInfoHandler(serveMux *http.ServeMux) {
 			connectionDTOs = append(connectionDTOs, cdto)
 		}
 
-		sort.Slice(connectionDTOs, func(i, j int) bool {
-			return connectionDTOs[i].ID < connectionDTOs[j].ID
+		slices.SortFunc(connectionDTOs, func(cdto1, cdto2 *connectionDTO) int {
+			return cmp.Compare(cdto1.ID, cdto2.ID)
 		})
 
 		response := connectionInfoResponse{
